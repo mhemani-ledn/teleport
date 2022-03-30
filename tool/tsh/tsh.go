@@ -281,6 +281,8 @@ type CLIConf struct {
 	LocalProxyCertFile string
 	// LocalProxyKeyFile is the client key used by local proxy.
 	LocalProxyKeyFile string
+	// LocalProxyMTLS specifies whether local proxy will open auth'd tunnel.
+	LocalProxyMTLS bool
 
 	// ConfigProxyTarget is the node which should be connected to in `tsh config-proxy`.
 	ConfigProxyTarget string
@@ -486,6 +488,7 @@ func Run(args []string, opts ...cliOption) error {
 	proxyDB.Flag("port", " Specifies the source port used by proxy db listener").Short('p').StringVar(&cf.LocalProxyPort)
 	proxyDB.Flag("cert-file", "Certificate file for proxy client TLS configuration").StringVar(&cf.LocalProxyCertFile)
 	proxyDB.Flag("key-file", "Key file for proxy client TLS configuration").StringVar(&cf.LocalProxyKeyFile)
+	proxyDB.Flag("mtls", "Open authenticated tunnel so clients don't need to authenticate").BoolVar(&cf.LocalProxyMTLS)
 	proxyApp := proxy.Command("app", "Start local TLS proxy for app connection when using Teleport in single-port mode")
 	proxyApp.Arg("app", "The name of the application to start local proxy for").Required().StringVar(&cf.AppName)
 	proxyApp.Flag("port", "Specifies the source port used by by the proxy app listener").Short('p').StringVar(&cf.LocalProxyPort)

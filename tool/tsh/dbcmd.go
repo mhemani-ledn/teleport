@@ -310,6 +310,10 @@ func (c *cliCommandBuilder) getMongoCommand() *exec.Cmd {
 		flags.tlsCertKeyFile, c.profile.DatabaseCertPathForCluster(c.tc.SiteName, c.db.ServiceName),
 	}
 
+	if hasMongosh {
+		args = append(args, "--tlsUseSystemCA")
+	}
+
 	if c.options.caPath != "" {
 		// caPath is set only if mongo connects to the Teleport Proxy via ALPN SNI Local Proxy
 		// and connection is terminated by proxy identity certificate.
